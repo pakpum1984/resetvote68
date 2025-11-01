@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>รีเซ็ตการเลือกตั้ง</title>
+    <style>
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #6c757d;
+            --success-color: #28a745;
+            --danger-color: #dc3545;
+            --dark-color: #343a40;
+        }
+        
+        body {
+            font-family: 'Prompt', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #202124;
+        }
+        .reset-container {
+            max-width: 900px;
+            margin: 32px auto;
+            background-color: white;
+            border-radius: 8px;
+            padding: 24px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+            border-top: 5px solid var(--danger-color);
+            border-bottom: 5px solid var(--danger-color);
+        }
+        .reset-header {
+            border-bottom: 1px solid #dadce0;
+            padding-bottom: 16px;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+        .reset-title {
+            font-size: 24px;
+            font-weight: 500;
+            margin: 8px 0;
+            color: var(--danger-color);
+        }
+        .reset-description {
+            font-size: 16px;
+            color: #555;
+            margin-top: 0;
+        }
+        .reset-warning {
+            background-color: rgba(220, 53, 69, 0.1);
+            border: 1px solid var(--danger-color);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 16px;
+            color: var(--dark-color);
+        }
+        .reset-button {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: var(--danger-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .reset-button:hover {
+            background-color: #c82333;
+        }
+        .footer {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .bottom-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--dark-color);
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.3);
+            z-index: 2000;
+            padding: 8px 0;
+        }
+        .bottom-nav .nav-items {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        .bottom-nav a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            text-align: center;
+            flex: 1;
+            padding: 6px 0;
+            transition: all 0.3s;
+            border-radius: 8px;
+            margin: 0 4px;
+        }
+        .bottom-nav a.active {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        .bottom-nav a.disable {
+            color: rgba(255, 255, 255, 0.4);
+            pointer-events: none;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+        .bottom-nav a i {
+            display: block;
+            font-size: 22px;
+            margin-bottom: 2px;
+        }
+        .bottom-nav a span {
+            font-size: 11px;
+            line-height: 1.2;
+        }
+        @media (max-width: 768px) {
+            .reset-container {
+                margin: 16px 12px;
+                padding: 16px;
+                width: calc(100% - 24px);
+            }
+            .reset-title {
+                font-size: 20px;
+            }
+            .reset-description {
+                font-size: 14px;
+            }
+            .reset-warning {
+                font-size: 14px;
+                padding: 12px;
+            }
+            .reset-button {
+                font-size: 14px;
+                padding: 8px 16px;
+            }
+            .bottom-nav {
+                display: block;
+            }
+        }
+        @media (max-width: 400px) {
+            .reset-container {
+                margin: 12px 8px;
+                padding: 12px;
+            }
+            .reset-title {
+                font-size: 18px;
+            }
+            .reset-description {
+                font-size: 13px;
+            }
+            .reset-warning {
+                font-size: 13px;
+                padding: 10px;
+            }
+            .reset-button {
+                font-size: 13px;
+                padding: 8px 14px;
+            }
+            .bottom-nav a i {
+                font-size: 20px;
+            }
+            .bottom-nav a span {
+                font-size: 10px;
+            }
+        }
+        @media print {
+            .reset-container, .bottom-nav, .reset-button {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="resetSection" class="reset-container">
+        <nav class="bottom-nav">
+            <div class="nav-items">
+                <a href="#" class="disable">
+                    <i class="fas fa-cog"></i>
+                    <span>ตั้งค่า</span>
+                </a>
+                <a href="#" class="disable">
+                    <i class="fas fa-users"></i>
+                    <span>พนักงาน</span>
+                </a>
+                <a href="#" class="disable">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>แดชบอร์ด</span>
+                </a>
+                <a href="index.html" class="disable">
+                    <i class="fas fa-file-alt"></i>
+                    <span>แบบฟอร์ม</span>
+                </a>
+                <a href="report.html" class="disable">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>รายงาน</span>
+                </a>
+                <a href="reset.html" class="active">
+                    <i class="fas fa-undo"></i>
+                    <span>รีเซ็ต</span>
+                </a>
+            </div>
+        </nav>
+        <div class="reset-header">
+            <center>
+                 <h4 style="color: var(--danger-color);">รีเซ็ตการเลือกตั้ง</h4>
+                <div class="reset-description">
+                    บริษัท เชียงใหม่โฟรเซ่นฟูดส์ จำกัด(มหาชน) Cm2
+                </div>
+<!--                 <div class="reset-title">รีเซ็ตการเลือกตั้ง</div> -->
+            </center>
+        </div>
+        <div class="reset-warning">
+            <i class="fas fa-exclamation-triangle"></i>
+            คำเตือน: การรีเซ็ตจะลบข้อมูลการเลือกตั้งทั้งหมด รวมถึงคะแนนโหวตและการลงคะแนนของพนักงาน
+        </div>
+        <button class="reset-button" onclick="checkSystemStatus()" style="background-color: var(--primary-color); margin-bottom: 10px;">
+    ตรวจสอบสถานะระบบ
+</button>
+<button class="reset-button" onclick="confirmReset()">
+    รีเซ็ตการเลือกตั้ง
+</button>
+        <div class="footer">
+            <h6 class="text-lg font-semibold" style="font-size: 12px;color:black;">
+                <i class="far fa-copyright"></i> 2025 จัดทำโดย คณะสวัสดิการโรงงานCm2
+            </h6>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-auth-compat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script>
+      // Firebase configuration
+const firebaseConfig = {
+    apiKey: "AIzaSyCWRIFj6NHeHkXL1bIEbb93lUzaZf8NNmI",
+    authDomain: "fir-crud-b7960.firebaseapp.com",
+    projectId: "fir-crud-b7960",
+    storageBucket: "fir-crud-b7960.firebasestorage.app",
+    messagingSenderId: "32150734884",
+    appId: "1:32150734884:web:58b01e9f4ba0d9b9a170b1",
+    measurementId: "G-K97E7L101D"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
+const functions = getFunctions(app);
+
+// ตั้งค่า emulator สำหรับการพัฒนา
+if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
+    connectFunctionsEmulator(functions, "localhost", 5001);
+}
+
+// ฟังก์ชันล็อกอินแบบ Anonymous
+async function initializeAuth() {
+    try {
+        await signInAnonymously(auth);
+        console.log("Anonymous authentication successful for reset");
+        return true;
+    } catch (error) {
+        console.error("Authentication failed:", error);
+        showError('การเชื่อมต่อล้มเหลว', 'ไม่สามารถเชื่อมต่อกับระบบได้');
+        return false;
+    }
+}
+
+// ฟังก์ชันแสดง error
+function showError(title, message) {
+    Swal.fire({
+        icon: 'error',
+        title: title,
+        text: message,
+        confirmButtonText: 'ตกลง'
+    });
+}
+
+// ฟังก์ชันยืนยันการรีเซ็ต
+async function confirmReset() {
+    const { value: password } = await Swal.fire({
+        title: 'ยืนยันการรีเซ็ตระบบ',
+        html: `
+            <div class="text-danger mb-3">
+                <i class="fas fa-exclamation-triangle"></i>
+                <strong>คำเตือน:</strong> การดำเนินการนี้จะลบข้อมูลการเลือกตั้งทั้งหมด!
+            </div>
+            <p>กรุณากรอกรหัสผ่านเพื่อยืนยัน:</p>
+            <input type="password" id="resetPassword" class="swal2-input" placeholder="รหัสผ่าน">
+        `,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#dc3545',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'รีเซ็ตระบบ',
+        cancelButtonText: 'ยกเลิก',
+        preConfirm: () => {
+            const password = document.getElementById('resetPassword').value;
+            if (!password) {
+                Swal.showValidationMessage('กรุณากรอกรหัสผ่าน');
+            }
+            return password;
+        }
+    });
+
+    if (password) {
+        // ตรวจสอบรหัสผ่าน (ตัวอย่างใช้ "admin123")
+        if (password === "admin123") {
+            resetElection();
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'รหัสผ่านไม่ถูกต้อง',
+                text: 'กรุณากรอกรหัสผ่านที่ถูกต้อง',
+                confirmButtonText: 'ตกลง'
+            });
+        }
+    }
+}
+
+// ฟังก์ชันรีเซ็ตการเลือกตั้ง
+async function resetElection() {
+    try {
+        Swal.fire({
+            title: 'กำลังรีเซ็ตระบบ...',
+            text: 'กรุณารอสักครู่',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        // ใช้ Batch write สำหรับประสิทธิภาพ
+        const batch = writeBatch(db);
+
+        // 1. ลบ electionResponses (ข้อมูลการลงคะแนน)
+        const votesSnapshot = await getDocs(collection(db, 'electionResponses'));
+        votesSnapshot.forEach((doc) => {
+            batch.delete(doc.ref);
+        });
+
+        // 2. รีเซ็ตคะแนนผู้สมัครเป็น 0
+        const candidatesSnapshot = await getDocs(collection(db, 'candidates'));
+        candidatesSnapshot.forEach((doc) => {
+            batch.update(doc.ref, {
+                votes: 0,
+                lastUpdated: new Date().toISOString()
+            });
+        });
+
+        // 3. ลบ auditLogs
+        const auditLogsSnapshot = await getDocs(collection(db, 'auditLogs'));
+        auditLogsSnapshot.forEach((doc) => {
+            batch.delete(doc.ref);
+        });
+
+        // 4. ลบ voteLogs
+        const voteLogsSnapshot = await getDocs(collection(db, 'voteLogs'));
+        voteLogsSnapshot.forEach((doc) => {
+            batch.delete(doc.ref);
+        });
+
+        // 5. ลบ publicResults
+        const publicResultsRef = doc(db, 'publicResults', 'current');
+        batch.delete(publicResultsRef);
+
+        // Execute batch
+        await batch.commit();
+
+        Swal.fire({
+            icon: 'success',
+            title: 'รีเซ็ตสำเร็จ!',
+            html: `
+                <div class="text-success">
+                    <i class="fas fa-check-circle"></i>
+                    <strong>ระบบถูกรีเซ็ตเรียบร้อยแล้ว</strong>
+                </div>
+                <p class="mt-3">ข้อมูลการเลือกตั้งทั้งหมดถูกลบและรีเซ็ตแล้ว</p>
+            `,
+            confirmButtonText: 'ตกลง'
+        });
+
+    } catch (error) {
+        console.error('Error resetting election:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'เกิดข้อผิดพลาด',
+            text: 'ไม่สามารถรีเซ็ตระบบได้: ' + error.message,
+            confirmButtonText: 'ตกลง'
+        });
+    }
+}
+
+// ฟังก์ชันเริ่มต้นระบบ
+async function initializeReset() {
+    try {
+        // ล็อกอินก่อน
+        const authSuccess = await initializeAuth();
+        if (!authSuccess) return;
+
+        console.log("Reset page initialized successfully");
+
+    } catch (error) {
+        console.error('Error initializing reset page:', error);
+        showError('เกิดข้อผิดพลาด', 'ไม่สามารถเริ่มต้นระบบได้');
+    }
+}
+
+// เริ่มต้นระบบเมื่อโหลดหน้า
+document.addEventListener('DOMContentLoaded', function() {
+    // ตั้งค่า bottom-nav
+    const links = document.querySelectorAll('.bottom-nav a');
+    links.forEach(link => {
+        link.addEventListener('click', function(e) {
+            links.forEach(l => l.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+
+    // Set active link based on current page
+    const currentPath = window.location.pathname.split('/').pop() || 'reset.html';
+    links.forEach(link => {
+        const href = link.getAttribute('href');
+        if (href === currentPath) {
+            link.classList.add('active');
+        } else {
+            link.classList.remove('active');
+        }
+    });
+
+    // เริ่มต้นระบบรีเซ็ต
+    initializeReset();
+});
+
+// ฟังก์ชันตรวจสอบสถานะระบบ
+async function checkSystemStatus() {
+    try {
+        Swal.fire({
+            title: 'กำลังตรวจสอบสถานะระบบ...',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        const [votesSnapshot, candidatesSnapshot, employeesSnapshot] = await Promise.all([
+            getDocs(collection(db, 'electionResponses')),
+            getDocs(collection(db, 'candidates')),
+            getDocs(collection(db, 'employees'))
+        ]);
+
+        const totalVotes = votesSnapshot.size;
+        const totalCandidates = candidatesSnapshot.size;
+        const totalEmployees = employeesSnapshot.size;
+
+        let candidateVotesInfo = '';
+        candidatesSnapshot.forEach(doc => {
+            const candidate = doc.data();
+            candidateVotesInfo += `<br>• ${candidate.name}: ${candidate.votes || 0} คะแนน`;
+        });
+
+        Swal.fire({
+            icon: 'info',
+            title: 'สถานะระบบ',
+            html: `
+                <div class="text-start">
+                    <strong>สรุปสถานะ:</strong>
+                    <br>👥 พนักงานทั้งหมด: ${totalEmployees} คน
+                    <br>🗳️ ลงคะแนนแล้ว: ${totalVotes} คน
+                    <br>👨‍💼 ผู้สมัคร: ${totalCandidates} คน
+                    <br>
+                    <strong>คะแนนผู้สมัคร:</strong>
+                    ${candidateVotesInfo || '<br>• ยังไม่มีคะแนน'}
+                </div>
+            `,
+            confirmButtonText: 'ตกลง',
+            width: 600
+        });
+
+    } catch (error) {
+        console.error('Error checking system status:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'ไม่สามารถตรวจสอบสถานะได้',
+            text: error.message,
+            confirmButtonText: 'ตกลง'
+        });
+    }
+}
+    </script>
+</body>
+</html>
